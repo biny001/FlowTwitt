@@ -21,4 +21,7 @@
   .input {
     @apply w-full p-2 bg-dark-2 rounded-md border-none focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 text-sm;
   }
+  .error {
+    @apply mt-1 w-56 text-sm text-red  p-2;
+  }
 }

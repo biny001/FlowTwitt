@@ -8,29 +8,27 @@ import Home from "./Pages/Home";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public */}
-        <Route element={<LoginLayout />}>
-          <Route
-            path="/sign-up"
-            element={<SignUpForm />}
-          />
-          <Route
-            path="/sign-in"
-            element={<SignInForm />}
-          />
-        </Route>
-        {/* private */}
-        <Route element={<AppLayout />}>
-          <Route
-            index
-            path="/"
-            element={<Home />}
-          />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      {/* Public */}
+      <Route element={<LoginLayout />}>
+        <Route
+          path="/sign-up"
+          element={<SignUpForm />}
+        />
+        <Route
+          path="/sign-in"
+          element={<SignInForm />}
+        />
+      </Route>
+      {/* private */}
+      <Route element={<AppLayout />}>
+        <Route
+          index
+          path="/"
+          element={<Home />}
+        />
+      </Route>
+    </Routes>
   );
 };
 
