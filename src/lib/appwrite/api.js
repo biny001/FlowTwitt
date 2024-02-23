@@ -89,3 +89,13 @@ export async function getCurrentUser() {
     return null;
   }
 }
+
+export async function Signout() {
+  try {
+    const deletSession = await account.deleteSession("current");
+
+    return deletSession;
+  } catch (err) {
+    console.log("error loggin out user");
+  }
+}

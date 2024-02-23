@@ -62,6 +62,7 @@ const SignUpForm = () => {
           />
           <h1 className="text-3xl">TwittFlow</h1>
         </div>
+        <h2 className=" text-xl px-2 mb-4">Create a new Account</h2>
         <div className="label">
           <label htmlFor="name">Name</label>
           <input
