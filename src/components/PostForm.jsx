@@ -1,22 +1,53 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useFormContext } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import FileUploader from "./FileUploader";
 
+import { useUserContext } from "../context/AuthContext";
+import { useCreatePost } from "../lib/reactQuery/queriesAndMutations";
 const PostForm = ({ post }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useFormContext();
+  const [file, setfile] = useState([]);
+
+  const { mutateAsync: CreatePost, isPending: isLoading } = useCreatePost();
+  const { user } = useUserContext();
+  const navigate = useNavigate();
   const onchange = (acceptedFiles) => {
     // Handle the file change logic here
     console.log("Selected Files:", acceptedFiles);
+    setfile(acceptedFiles);
+    console.log(user.id);
   };
+
+  async function onSubmit(data) {
+    const newData = {
+      ...data,
+      file: file,
+    };
+
+    const newPost = await CreatePost({
+      ...newData,
+      userId: user?.id, // Add the user id to the post
+    });
+
+    if (!newPost) {
+      console.log("error creating post");
+    }
+    console.log("newPost", newPost);
+    navigate("/");
+    setfile([]);
+  }
 
   return (
     <>
-      <form className="flex flex-col gap-9 w-full max-w-5xl">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-9 w-full max-w-5xl"
+      >
         <div className="label">
           <label
             className="shad-form_label "
@@ -41,7 +72,7 @@ const PostForm = ({ post }) => {
           </label>
           <FileUploader
             className="input shad-textarea custom-scrollbar "
-            {...register("imageUrl")}
+            register={register}
             fieldChange={onchange}
             mediaUrl={post?.imageUrl}
           />
@@ -66,13 +97,13 @@ const PostForm = ({ post }) => {
         </div>
 
         <div className="label">
-          <label htmlFor="location">Add Tags (seperted by comma " , ")</label>
+          <label htmlFor="tags">Add Tags (seperted by comma " , ")</label>
           <div className=" flex items-center relative  ">
             <input
               type="text"
-              id="Tag"
+              id="tags"
               className="input"
-              {...register("Tag")}
+              {...register("tags")}
               placeholder="Art,Expression,Learn"
             />
           </div>

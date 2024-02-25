@@ -1,6 +1,8 @@
+import { FormProvider, useForm } from "react-hook-form";
 import PostForm from "../components/PostForm";
-
 const CreatePost = () => {
+  const methods = useForm();
+
   return (
     <div className=" flex flex-1">
       <div className=" common-container">
@@ -13,7 +15,9 @@ const CreatePost = () => {
           />
           <h2 className=" h3-bold md:h2-bold text-left w-full">Create Post</h2>
         </div>
-        <PostForm />
+        <FormProvider {...methods}>
+          <PostForm />
+        </FormProvider>
       </div>
     </div>
   );

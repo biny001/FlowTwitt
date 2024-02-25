@@ -22,7 +22,7 @@ const InitialState = {
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(InitialState);
+  const [user, setUser] = useState(InitialUser);
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
@@ -32,14 +32,15 @@ const AuthProvider = ({ children }) => {
     try {
       const currentAccount = await getCurrentUser();
       if (currentAccount) {
-        setUser({
+        setUser((prevUser) => ({
+          ...prevUser,
           id: currentAccount.$id,
           name: currentAccount.name,
           username: currentAccount.username,
           email: currentAccount.email,
           imageUrl: currentAccount.imageUrl,
           bio: currentAccount.bio,
-        });
+        }));
 
         setIsAuthenticated(true);
 
@@ -56,10 +57,23 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("cookieFallback") === "[]") {
+    const cookieFallback = localStorage.getItem("cookieFallback");
+    if (
+      cookieFallback === "[]" ||
+      cookieFallback === null ||
+      cookieFallback === undefined
+    ) {
       navigate("/sign-in");
     }
-    checkAuthUser();
+
+    const fetchData = async () => {
+      const isAuthenticated = await checkAuthUser();
+      if (!isAuthenticated) {
+        navigate("/sign-in");
+      }
+    };
+
+    fetchData();
   }, []);
 
   const value = {
