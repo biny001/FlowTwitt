@@ -34,17 +34,17 @@ const LeftSideBar = () => {
           </div>
         </Link>
         <Link
-          to={`/profile/${user.id}`}
+          to={`/profile/${user?.id}`}
           className=" flex gap-3 items-center"
         >
           <img
-            to={`/profile/${user.id}`}
-            src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
+            to={`/profile/${user?.id}`}
+            src={user?.imageUrl || "/assets/icons/profile-placeholder.svg"}
             className=" h-8 w-8 rounded-full"
           />
           <div className=" flex flex-col ">
-            <p className="body-bold">{user.name}</p>
-            <p className="small-regular text-light-3">@{user.username}</p>
+            <p className="body-bold">{user?.name}</p>
+            <p className="small-regular text-light-3">@{user?.username}</p>
           </div>
         </Link>
 

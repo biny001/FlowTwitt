@@ -24,3 +24,7 @@ export function formatRelativeDate(dateString) {
     return "just now";
   }
 }
+
+export const checkIsLiked = (likeList, userId) => {
+  return likeList.includes(userId);
+};

@@ -39,7 +39,7 @@ const Topbar = () => {
           >
             <MdLogout size={24} />
           </button>
-          <Link to={`/profile/${user.id}`}>
+          <Link to={`/profile/${user?.id}`}>
             <img
               src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
               className=" h-8 w-8 rounded-full"
