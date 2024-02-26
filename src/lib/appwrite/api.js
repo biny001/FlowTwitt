@@ -1,5 +1,6 @@
 import { ID, Query } from "appwrite";
 import { account, databases, appwriteConfig, avatars, storage } from "./config";
+import { data } from "autoprefixer";
 
 export async function createUserAccount(user) {
   try {
@@ -197,6 +198,64 @@ export async function getRecentPost() {
 
     console.log(recentPosts);
     return recentPosts;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function likePost({ postId, likesArray }) {
+  try {
+    const updatedPost = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      postId,
+      {
+        likes: likesArray,
+      }
+    );
+
+    if (!updatedPost) throw Error;
+
+    return updatedPost;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function savePost(userId, postId) {
+  try {
+    console.log("This is me trying to debug my code", postId, userId);
+    const savedPost = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.savesCollectionId,
+      ID.unique(),
+      {
+        users: userId,
+        posts: postId,
+      }
+    );
+
+    console.log(savedPost);
+
+    if (!savedPost) throw Error;
+
+    return savedPost;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function deletSavedPost(savedRecordId) {
+  try {
+    const statusCode = await databases.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.savesCollectionId,
+      savedRecordId
+    );
+
+    if (!statusCode) throw Error;
+
+    return { status: "ok" };
   } catch (err) {
     console.log(err);
   }
